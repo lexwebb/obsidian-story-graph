@@ -10,7 +10,9 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "isolatedModules": true,
-	"strictNullChecks": true,
+    "strictNullChecks": true,
+    "jsx": "react",
+    "allowSyntheticDefaultImports": true,
     "lib": [
       "DOM",
       "ES5",

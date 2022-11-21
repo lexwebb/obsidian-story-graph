@@ -1,4 +1,5 @@
 import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import ReactTestView, {TEST_VIEW_TYPE} from "./views/ReactTestView";
 
 // Remember to rename these classes and interfaces!
 
@@ -13,8 +14,27 @@ const DEFAULT_SETTINGS: MyPluginSettings = {
 export default class MyPlugin extends Plugin {
 	settings: MyPluginSettings;
 
+  async activateView() {
+    this.app.workspace.detachLeavesOfType(TEST_VIEW_TYPE);
+
+    await this.app.workspace.getRightLeaf(false).setViewState({
+      type: TEST_VIEW_TYPE,
+      active: true,
+    });
+
+    this.app.workspace.revealLeaf(
+      this.app.workspace.getLeavesOfType(TEST_VIEW_TYPE)[0]
+    );
+  }
+
 	async onload() {
 		await this.loadSettings();
+
+    this.registerView(TEST_VIEW_TYPE, (leaf) => new ReactTestView(leaf));
+
+    this.addRibbonIcon("dice", "Activate view", () => {
+      this.activateView();
+    });
 
 		// This creates an icon in the left ribbon.
 		const ribbonIconEl = this.addRibbonIcon('dice', 'Sample Plugin', (evt: MouseEvent) => {
@@ -79,7 +99,7 @@ export default class MyPlugin extends Plugin {
 	}
 
 	onunload() {
-
+    this.app.workspace.detachLeavesOfType(TEST_VIEW_TYPE);
 	}
 
 	async loadSettings() {
