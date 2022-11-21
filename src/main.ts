@@ -98,7 +98,7 @@ class SampleModal extends Modal {
 
 	onOpen() {
 		const {contentEl} = this;
-		contentEl.setText('Woah!');
+		contentEl.setText('Beans!');
 	}
 
 	onClose() {

@@ -1,10 +1,10 @@
 {
 	"id": "obsidian-story-graph",
-	"name": "Story Graph",
-	"version": "1.0.0",
+	"name": "Obsidian Story Graph Plugin",
+	"version": "0.1.0",
 	"minAppVersion": "0.15.0",
-	"description": "This is a plugin for building narrative branching story graphs",
-	"author": "Lex Southin-Webb",
-	"authorUrl": "https://github.com/lexwebb",
+	"description": "Create narrative story graphs in obsidian",
+	"author": "Les Southin-Webb",
+	"authorUrl": "https://github.com/lexwebb/obsidian-story-graph",
 	"isDesktopOnly": false
 }

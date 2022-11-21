@@ -1,23 +1,76 @@
 {
-    "root": true,
-    "parser": "@typescript-eslint/parser",
-    "env": { "node": true },
-    "plugins": [
-      "@typescript-eslint"
-    ],
-    "extends": [
-      "eslint:recommended",
-      "plugin:@typescript-eslint/eslint-recommended",
-      "plugin:@typescript-eslint/recommended"
-    ], 
-    "parserOptions": {
-        "sourceType": "module"
+  "root": true,
+  "settings": {
+    "react": {
+      "version": "detect"
     },
-    "rules": {
-      "no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": ["error", { "args": "none" }],
-      "@typescript-eslint/ban-ts-comment": "off",
-      "no-prototype-builtins": "off",
-      "@typescript-eslint/no-empty-function": "off"
-    } 
+    "import/parsers": {
+      "@typescript-eslint/parser": [
+        ".ts",
+        ".tsx"
+      ]
+    },
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true
+      }
+    }
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
+    "import/no-unresolved": "error",
+    "no-console": "warn"
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "jest",
+    "import",
+    "react"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@next/next/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:jest/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "**/*.tsx"
+      ],
+      "rules": {
+        "react/prop-types": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": [
+          "warn",
+          {
+            "argsIgnorePattern": "^_",
+            "varsIgnorePattern": "^_",
+            "caughtErrorsIgnorePattern": "^_"
+          }
+        ]
+      }
+    }
+  ],
+  "globals": {
+    "window": true
   }
+}
