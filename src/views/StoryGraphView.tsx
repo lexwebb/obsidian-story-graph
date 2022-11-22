@@ -1,5 +1,8 @@
 import { WorkspaceLeaf } from "obsidian";
-import * as React from "react";
+import React, { useMemo } from "react";
+import remarkDirective from "remark-directive";
+import markdown from "remark-parse";
+import { unified } from "unified";
 
 import ReactTextFileView, { useTextFile } from "../utils/ReactTextFileView";
 
@@ -19,7 +22,13 @@ class StoryGraphView extends ReactTextFileView {
 
 const StoryGraph: React.FC = () => {
   const { data } = useTextFile();
-  return <div>{data}</div>;
+
+  const parsed = useMemo(() => {
+    // TODO https://github.com/remarkjs/remark-directive#use
+    return unified().use(markdown).use(remarkDirective).parse(data);
+  }, [data]);
+
+  return <div>{JSON.stringify(parsed)}</div>;
 };
 
 export default StoryGraphView;
