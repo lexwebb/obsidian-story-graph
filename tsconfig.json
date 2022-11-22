@@ -13,6 +13,7 @@
     "strictNullChecks": true,
     "jsx": "react",
     "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "lib": [
       "DOM",
       "ES5",

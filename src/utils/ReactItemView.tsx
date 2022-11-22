@@ -1,11 +1,13 @@
 import { ItemView, WorkspaceLeaf } from "obsidian";
 import React from "react";
 import ReactDOM from "react-dom";
-import { createRoot } from "react-dom/client";
+import { createRoot, Root } from "react-dom/client";
 
-abstract class ReactView extends ItemView {
+abstract class ReactItemView extends ItemView {
   abstract readonly VIEW_TYPE: string;
   abstract readonly DISPLAY_TEXT: string;
+
+  private reactRoot: Root | null = null;
 
 
   constructor(leaf: WorkspaceLeaf) {
@@ -21,10 +23,10 @@ abstract class ReactView extends ItemView {
   }
 
   async onOpen() {
-    const root = createRoot(this.containerEl.children[1]);
-    root.render(
+    this.reactRoot = createRoot(this.containerEl.children[1]);
+    this.reactRoot.render(
       <React.StrictMode>
-        {this.render()},
+        {this.render()}
       </React.StrictMode>
     );
   }
@@ -32,8 +34,8 @@ abstract class ReactView extends ItemView {
   abstract render(): JSX.Element;
 
   async onClose() {
-    ReactDOM.unmountComponentAtNode(this.containerEl.children[1]);
+    this.reactRoot?.unmount();
   }
 }
 
-export default ReactView;
+export default ReactItemView;

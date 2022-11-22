@@ -2,11 +2,11 @@ import { ItemView, WorkspaceLeaf } from "obsidian";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { createRoot } from "react-dom/client";
-import ReactView from "../utils/ReactView";
+import ReactItemView from "../utils/ReactItemView";
 
 export const TEST_VIEW_TYPE = "react-test-view";
 
-class ReactTestView extends ReactView {
+class ReactTestView extends ReactItemView {
   VIEW_TYPE = TEST_VIEW_TYPE;
   DISPLAY_TEXT = "Example View";
 
