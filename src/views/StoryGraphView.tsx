@@ -1,8 +1,12 @@
+import parse from "html-react-parser";
 import { WorkspaceLeaf } from "obsidian";
 import React, { useMemo } from "react";
 import remarkDirective from "remark-directive";
+import remarkHtml from "remark-html";
 import markdown from "remark-parse";
-import { unified } from "unified";
+import { CompilerFunction, unified } from "unified";
+import { Node } from "unist";
+import { visit } from "unist-util-visit";
 
 import ReactTextFileView, { useTextFile } from "../utils/ReactTextFileView";
 
@@ -20,15 +24,68 @@ class StoryGraphView extends ReactTextFileView {
   }
 }
 
+type GraphData = {
+  cards: Card[];
+};
+
 const StoryGraph: React.FC = () => {
   const { data } = useTextFile();
 
-  const parsed = useMemo(() => {
-    // TODO https://github.com/remarkjs/remark-directive#use
-    return unified().use(markdown).use(remarkDirective).parse(data);
+  const parsedData = useMemo(() => {
+    return unified()
+      .use(markdown)
+      .use(remarkDirective)
+      .use(remarkCardPlugin)
+      .processSync(data).data as GraphData;
   }, [data]);
 
-  return <div>{JSON.stringify(parsed)}</div>;
+  return (
+    <div>
+      {parse(
+        parsedData.cards
+          .map((d) => d.md)
+          .join("")
+          .replace("<p><div></div></p>", "")
+      )}
+    </div>
+  );
 };
+
+type Card = {
+  col: string;
+  row: string;
+  md: string;
+};
+
+type DirectiveNode = Node & {
+  name: string;
+  attributes: Record<string, string>;
+  children: DirectiveNode[];
+};
+
+function remarkCardPlugin() {
+  const compiler: CompilerFunction = (node, data) => {
+    data.data.cards = [];
+    visit(node, "containerDirective", (node: DirectiveNode) => {
+      if (node.name === "card") {
+        (data.data.cards as Card[]).push({
+          col: node.attributes.c,
+          row: node.attributes.r,
+          md: node.children
+            .map((c) =>
+              unified()
+                .use(remarkDirective)
+                .use(remarkHtml)
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                .stringify(c as any)
+            )
+            .join(""),
+        });
+      }
+    });
+  };
+
+  Object.assign(this, { Compiler: compiler });
+}
 
 export default StoryGraphView;
