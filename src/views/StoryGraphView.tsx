@@ -43,7 +43,7 @@ const StoryGraph: React.FC = () => {
     <div>
       {parse(
         parsedData.cards
-          .map((d) => d.md)
+          .map((d) => d.html)
           .join("")
           .replace("<p><div></div></p>", "")
       )}
@@ -54,7 +54,7 @@ const StoryGraph: React.FC = () => {
 type Card = {
   col: string;
   row: string;
-  md: string;
+  html: string;
 };
 
 type DirectiveNode = Node & {
@@ -71,7 +71,7 @@ function remarkCardPlugin() {
         (data.data.cards as Card[]).push({
           col: node.attributes.c,
           row: node.attributes.r,
-          md: node.children
+          html: node.children
             .map((c) =>
               unified()
                 .use(remarkDirective)
