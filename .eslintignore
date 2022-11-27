@@ -5,3 +5,4 @@ dist
 build
 # don't lint coverage output
 coverage
+webpack.config.js

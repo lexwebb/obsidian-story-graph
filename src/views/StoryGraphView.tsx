@@ -8,6 +8,7 @@ import { CompilerFunction, unified } from "unified";
 import { Node } from "unist";
 import { visit } from "unist-util-visit";
 
+import Card from "../components/Card";
 import ReactTextFileView, { useTextFile } from "../utils/ReactTextFileView";
 
 export const STORY_GRAPH_VIEW_TYPE = "story-graph-view";
@@ -41,6 +42,7 @@ const StoryGraph: React.FC = () => {
 
   return (
     <div>
+      <Card></Card>
       {parse(
         parsedData.cards
           .map((d) => d.html)
