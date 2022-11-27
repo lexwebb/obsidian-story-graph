@@ -14,8 +14,22 @@
     "importHelpers": true,
     "isolatedModules": true,
     "outDir": "dist",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@views/*": [
+        "src/views/*"
+      ],
+      "@models/*": [
+        "src/models/*"
+      ],
+    }
   },
   "include": [
     "src/**/*"
-  ],
+  ]
 }

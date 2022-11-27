@@ -13,6 +13,33 @@
     "import/resolver": {
       "typescript": {
         "alwaysTryTypes": true
+      },
+      "alias": {
+        "map": [
+          [
+            "@",
+            "./src"
+          ],
+          [
+            "@components",
+            "./src/components"
+          ],
+          [
+            "@views",
+            "./src/views"
+          ],
+          [
+            "@models",
+            "./src/models"
+          ]
+        ],
+        "extensions": [
+          ".ts",
+          ".tsx",
+          ".js",
+          ".jsx",
+          ".json"
+        ]
       }
     }
   },

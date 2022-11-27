@@ -69,6 +69,11 @@ const config = {
   },
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js", "..."],
+    alias: {
+      "@components": path.resolve(__dirname, "src/components/"),
+      "@views": path.resolve(__dirname, "src/views/"),
+      "@models": path.resolve(__dirname, "src/models/"),
+    },
   },
   externals: {
     electron: "commonjs2 electron",

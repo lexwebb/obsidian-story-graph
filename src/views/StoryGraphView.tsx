@@ -1,3 +1,5 @@
+import { Card } from "@/models/Card";
+import StoryCard from "@components/StoryCard";
 import parse from "html-react-parser";
 import { WorkspaceLeaf } from "obsidian";
 import React, { useMemo } from "react";
@@ -8,7 +10,6 @@ import { CompilerFunction, unified } from "unified";
 import { Node } from "unist";
 import { visit } from "unist-util-visit";
 
-import Card from "../components/Card";
 import ReactTextFileView, { useTextFile } from "../utils/ReactTextFileView";
 
 export const STORY_GRAPH_VIEW_TYPE = "story-graph-view";
@@ -42,7 +43,7 @@ const StoryGraph: React.FC = () => {
 
   return (
     <div>
-      <Card></Card>
+      <StoryCard></StoryCard>
       {parse(
         parsedData.cards
           .map((d) => d.html)
@@ -51,12 +52,6 @@ const StoryGraph: React.FC = () => {
       )}
     </div>
   );
-};
-
-type Card = {
-  col: string;
-  row: string;
-  html: string;
 };
 
 type DirectiveNode = Node & {
