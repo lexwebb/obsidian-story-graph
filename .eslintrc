@@ -17,10 +17,6 @@
       "alias": {
         "map": [
           [
-            "@",
-            "./src"
-          ],
-          [
             "@components",
             "./src/components"
           ],
