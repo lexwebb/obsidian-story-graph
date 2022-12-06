@@ -5,6 +5,7 @@ import React, { useMemo } from "react";
 import remarkDirective from "remark-directive";
 import remarkHtml from "remark-html";
 import markdown from "remark-parse";
+import remarkStringify from "remark-stringify";
 import { CompilerFunction, unified } from "unified";
 import { Node } from "unist";
 import { visitParents } from "unist-util-visit-parents";
@@ -76,63 +77,6 @@ function remarkCardPlugin() {
         }
       }
     );
-
-    // visit(entryNode, "containerDirective", (node: DirectiveNode) => {
-    //   if (node.name === "card") {
-    //     const col = node.attributes.c;
-    //     const row = node.attributes.r;
-
-    //     if (!nodeData.cards[parseInt(col)]) nodeData.cards[parseInt(col)] = [];
-
-    //     nodeData.cards[parseInt(col)][parseInt(row)] = {
-    //       col: node.attributes.c,
-    //       row: node.attributes.r,
-    //       title: "beans",
-    //       html: node.children
-    //         .map((c) =>
-    //           unified()
-    //             .use(remarkDirective)
-    //             .use(remarkHtml)
-    //             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    //             .stringify(c as any)
-    //         )
-    //         .join(""),
-    //       links: [],
-    //     };
-    //   }
-    // });
-
-    // visit(entryNode, "textDirective", (node: DirectiveNode) => {
-    //   if (node.name === "link") {
-    //     const col = node.attributes.c;
-    //     const row = node.attributes.r;
-
-    //     // Somehow we have a link without a parent
-    //     if (
-    //       !nodeData.cards[parseInt(col)] ||
-    //       !nodeData.cards[parseInt(col)][parseInt(row)]
-    //     )
-    //       return;
-
-    //     nodeData.cards[parseInt(col)][parseInt(row)].links.push({ col, row });
-    //   }
-    // });
-
-    // visit(entryNode, "textDirective", (node: DirectiveNode) => {
-    //   if (node.name === "link") {
-    //     const col = node.attributes.c;
-    //     const row = node.attributes.r;
-
-    //     // Somehow we have a link without a parent
-    //     if (
-    //       !nodeData.cards[parseInt(col)] ||
-    //       !nodeData.cards[parseInt(col)][parseInt(row)]
-    //     )
-    //       return;
-
-    //     nodeData.cards[parseInt(col)][parseInt(row)].links.push({ col, row });
-    //   }
-    // });
   };
 
   Object.assign(this, { Compiler: compiler });
@@ -151,6 +95,15 @@ const addNodeDataFromDirective = (
     col: node.attributes.c,
     row: node.attributes.r,
     title: "beans",
+    md: node.children
+      .map((c) =>
+        unified()
+          .use(remarkDirective)
+          .use(remarkStringify)
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          .stringify(c as any)
+      )
+      .join(""),
     html: node.children
       .map((c) =>
         unified()
@@ -188,15 +141,6 @@ const addMetaDataFromDirective = (
   const title = node.attributes.title;
 
   parentCard.title = title;
-
-  // Somehow we have a link without a parent
-  // if (!data.cards[parseInt(col)] || !data.cards[parseInt(col)][parseInt(row)])
-  //   return;
-
-  // data.cards[parseInt(col)][parseInt(row)].links.push({
-  //   col,
-  //   row,
-  // });
 };
 
 const getParentCard = (

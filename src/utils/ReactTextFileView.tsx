@@ -2,6 +2,8 @@ import { TextFileView, WorkspaceLeaf } from "obsidian";
 import React, { createContext, useContext } from "react";
 import { Root, createRoot } from "react-dom/client";
 
+import { AppContext } from "../appContext";
+
 export const TextFileContext = createContext<ReactTextFileView>(
   null as unknown as ReactTextFileView
 );
@@ -32,7 +34,9 @@ abstract class ReactTextFileView extends TextFileView {
 
     this.reactRoot?.render(
       <TextFileContext.Provider value={this}>
-        <React.StrictMode>{this.render()}</React.StrictMode>
+        <AppContext.Provider value={this.app}>
+          <React.StrictMode>{this.render()}</React.StrictMode>
+        </AppContext.Provider>
       </TextFileContext.Provider>
     );
   }
@@ -48,7 +52,9 @@ abstract class ReactTextFileView extends TextFileView {
   renderRoot() {
     this.reactRoot?.render(
       <TextFileContext.Provider value={this}>
-        <React.StrictMode>{this.render()}</React.StrictMode>
+        <AppContext.Provider value={this.app}>
+          <React.StrictMode>{this.render()}</React.StrictMode>
+        </AppContext.Provider>
       </TextFileContext.Provider>
     );
   }
