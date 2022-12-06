@@ -6,9 +6,10 @@ import styles from "./StoryColumns.module.scss";
 
 type Props = {
   cards: Card[][];
+  onCardUpdated: (id: string, md: string) => void;
 };
 
-const StoryColumns: React.FC<Props> = ({ cards }) => {
+const StoryColumns: React.FC<Props> = ({ cards, onCardUpdated }) => {
   return (
     <div className={styles.container}>
       {cards.map((column, i) => (
@@ -17,6 +18,7 @@ const StoryColumns: React.FC<Props> = ({ cards }) => {
             <StoryCard
               key={`${card.col}-${card.row}`}
               id={`${card.col}-${card.row}`}
+              onUpdatedMd={(md) => onCardUpdated(`${card.col}-${card.row}`, md)}
               {...card}
             />
           ))}

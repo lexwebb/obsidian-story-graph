@@ -1,7 +1,7 @@
 import StoryColumns from "@components/StoryColumns";
 import { Card } from "@models/Card";
 import { WorkspaceLeaf } from "obsidian";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import remarkDirective from "remark-directive";
 import remarkHtml from "remark-html";
 import markdown from "remark-parse";
@@ -10,7 +10,9 @@ import { CompilerFunction, unified } from "unified";
 import { Node } from "unist";
 import { visitParents } from "unist-util-visit-parents";
 
+import { useApp } from "../appContext";
 import ReactTextFileView, { useTextFile } from "../utils/ReactTextFileView";
+import { serializeCards } from "../utils/serializeCards";
 
 export const STORY_GRAPH_VIEW_TYPE = "story-graph-view";
 
@@ -32,6 +34,17 @@ type GraphData = {
 
 const StoryGraph: React.FC = () => {
   const { data } = useTextFile();
+  const { vault } = useApp();
+  const [mutableCards, setMutableCards] = useState<Card[][]>([]);
+
+  const onCardUpdated = (id: string, md: string) => {
+    const [col, row] = id.split("-").map((s) => parseInt(s));
+    const newCards = [...mutableCards];
+    newCards[col][row].md = md;
+
+    // TODO fix wierd makrdown conversions
+    vault.modify(app.workspace.getActiveFile(), serializeCards(newCards));
+  };
 
   const parsedData = useMemo(() => {
     return unified()
@@ -41,7 +54,13 @@ const StoryGraph: React.FC = () => {
       .processSync(data).data as GraphData;
   }, [data]);
 
-  return <StoryColumns cards={parsedData.cards} />;
+  useEffect(() => {
+    setMutableCards(parsedData.cards);
+  }, [parsedData.cards]);
+
+  return (
+    <StoryColumns cards={parsedData.cards} onCardUpdated={onCardUpdated} />
+  );
 };
 
 type DirectiveNode = Node & {

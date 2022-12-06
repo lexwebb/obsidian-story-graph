@@ -73,6 +73,8 @@ const config = {
       "@components": path.resolve(__dirname, "src/components/"),
       "@views": path.resolve(__dirname, "src/views/"),
       "@models": path.resolve(__dirname, "src/models/"),
+      "@hooks": path.resolve(__dirname, "src/hooks/"),
+      "@utils": path.resolve(__dirname, "src/utils/"),
     },
   },
   externals: {

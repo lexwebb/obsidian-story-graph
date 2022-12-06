@@ -16,6 +16,12 @@
 
   .body {
     padding: 0.5rem;
+
+    textarea {
+      resize: none;
+      width: 100%;
+      min-height: 10rem;
+    }
   }
   &:hover {
     border-color: var(--color-green);

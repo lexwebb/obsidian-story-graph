@@ -4,7 +4,7 @@ export type Card = {
   title: string;
   md: string;
   html: string;
-  links: Link[];
+  links?: Link[];
 };
 
 export type Link = {

@@ -27,6 +27,14 @@
           [
             "@models",
             "./src/models"
+          ],
+          [
+            "@hooks",
+            "./src/hooks"
+          ],
+          [
+            "@utils",
+            "./src/utils"
           ]
         ],
         "extensions": [
