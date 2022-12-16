@@ -6,12 +6,31 @@
   transition: border-color 0.2s ease-in-out;
   cursor: pointer;
 
-  .title {
+  .titleArea {
     font-size: 1.5rem;
     font-weight: 600;
     background-color: var(--color-base-30);
     padding: 0.5rem;
     border-radius: 0.5rem 0.5rem 0 0;
+    display: flex;
+    gap: 0.5rem;
+
+    .title {
+      flex: 1;
+      input {
+        width: 100%;
+      }
+    }
+
+    div:global(.clickable-icon) {
+      opacity: 0;
+    }
+
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      cursor: pointer;
+    }
   }
 
   .body {
@@ -25,5 +44,9 @@
   }
   &:hover {
     border-color: var(--color-green);
+
+    div:global(.clickable-icon) {
+      opacity: 1;
+    }
   }
 }

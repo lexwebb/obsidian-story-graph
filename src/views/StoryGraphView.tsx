@@ -2,6 +2,7 @@ import StoryColumns from "@components/StoryColumns";
 import { Card } from "@models/Card";
 import { WorkspaceLeaf } from "obsidian";
 import React, { useEffect, useMemo, useState } from "react";
+import remarkBreaks from "remark-breaks";
 import remarkDirective from "remark-directive";
 import remarkHtml from "remark-html";
 import markdown from "remark-parse";
@@ -46,6 +47,36 @@ const StoryGraph: React.FC = () => {
     vault.modify(app.workspace.getActiveFile(), serializeCards(newCards));
   };
 
+  const onCardTitleUpdated = (id: string, title: string) => {
+    const [col, row] = id.split("-").map((s) => parseInt(s));
+    const newCards = [...mutableCards];
+    newCards[col][row].title = title;
+
+    vault.modify(app.workspace.getActiveFile(), serializeCards(newCards));
+  };
+
+  const onCardInserted = (column: number, row: number) => {
+    const newCards = [...mutableCards];
+    newCards[column - 1].splice(row, 0, {
+      col: String(column),
+      row: String(row),
+      links: [],
+      title: "",
+      md: "",
+      html: "",
+    });
+
+    vault.modify(app.workspace.getActiveFile(), serializeCards(newCards));
+  };
+
+  const onCardDeleted = (id: string) => {
+    const [col, row] = id.split("-").map((s) => parseInt(s));
+    const newCards = [...mutableCards];
+    newCards[col].splice(row, 1);
+
+    vault.modify(app.workspace.getActiveFile(), serializeCards(newCards));
+  };
+
   const parsedData = useMemo(() => {
     return unified()
       .use(markdown)
@@ -59,7 +90,13 @@ const StoryGraph: React.FC = () => {
   }, [parsedData.cards]);
 
   return (
-    <StoryColumns cards={parsedData.cards} onCardUpdated={onCardUpdated} />
+    <StoryColumns
+      cards={parsedData.cards}
+      onCardUpdated={onCardUpdated}
+      onCardInserted={onCardInserted}
+      onTitleUpdated={onCardTitleUpdated}
+      onCardDeleted={onCardDeleted}
+    />
   );
 };
 
@@ -127,6 +164,7 @@ const addNodeDataFromDirective = (
       .map((c) =>
         unified()
           .use(remarkDirective)
+          .use(remarkBreaks)
           .use(remarkHtml)
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           .stringify(c as any)

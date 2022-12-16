@@ -16,6 +16,12 @@
     justify-content: center;
     transition: background-color 0.2s ease-in-out;
 
+    gap: 2rem;
+
+    &:not(:hover) button {
+      opacity: 0;
+    }
+
     &:hover {
       background-color: var(--color-base-10);
     }
