@@ -3,9 +3,5 @@ export type Card = {
   title: string;
   content: string;
   html?: string;
-  links?: Link[];
-};
-
-export type Link = {
-  id: string;
+  links?: string[];
 };

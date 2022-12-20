@@ -14,6 +14,7 @@
     "importHelpers": true,
     "isolatedModules": true,
     "outDir": "dist",
+    "strictNullChecks": true,
     "paths": {
       "@components/*": [
         "src/components/*"

@@ -29,8 +29,9 @@ const StoryGraph: React.FC = () => {
   const [mutableCards, setMutableCards] = useState<Card[][]>([]);
 
   useEffect(() => {
-    if (!data) {
-      vault.modify(app.workspace.getActiveFile(), serializeCards([[]]));
+    const activeFile = app.workspace.getActiveFile();
+    if (!data && activeFile) {
+      vault.modify(activeFile, serializeCards([[]]));
     }
   }, [data, vault]);
 
@@ -39,8 +40,9 @@ const StoryGraph: React.FC = () => {
     const newCards = [...mutableCards];
     newCards[col][row].content = md;
 
-    // TODO fix wierd makrdown conversions
-    vault.modify(app.workspace.getActiveFile(), serializeCards(newCards));
+    const activeFile = app.workspace.getActiveFile();
+
+    if (activeFile) vault.modify(activeFile, serializeCards(newCards));
   };
 
   const onCardTitleUpdated = (id: string, title: string) => {
@@ -48,7 +50,9 @@ const StoryGraph: React.FC = () => {
     const newCards = [...mutableCards];
     newCards[col][row].title = title;
 
-    vault.modify(app.workspace.getActiveFile(), serializeCards(newCards));
+    const activeFile = app.workspace.getActiveFile();
+
+    if (activeFile) vault.modify(activeFile, serializeCards(newCards));
   };
 
   const onCardInserted = (column: number, row: number) => {
@@ -65,7 +69,9 @@ const StoryGraph: React.FC = () => {
 
     newCards[column].splice(row, 0, newCard);
 
-    vault.modify(app.workspace.getActiveFile(), serializeCards(newCards));
+    const activeFile = app.workspace.getActiveFile();
+
+    if (activeFile) vault.modify(activeFile, serializeCards(newCards));
   };
 
   const onCardDeleted = (id: string) => {
@@ -75,7 +81,9 @@ const StoryGraph: React.FC = () => {
 
     if (newCards[col].length === 0) newCards.splice(col, 1);
 
-    vault.modify(app.workspace.getActiveFile(), serializeCards(newCards));
+    const activeFile = app.workspace.getActiveFile();
+
+    if (activeFile) vault.modify(activeFile, serializeCards(newCards));
   };
 
   const parsedData = useMemo(() => {

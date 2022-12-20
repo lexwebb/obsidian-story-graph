@@ -9,7 +9,6 @@ import BinIcon from "./icons/BinIcon";
 import styles from "./StoryCard.module.scss";
 
 interface StoryCardProps extends Card {
-  id: string;
   onUpdatedMd: (md: string) => void;
   onUpdateTitle: (title: string) => void;
   onDelete: () => void;
@@ -18,6 +17,8 @@ interface StoryCardProps extends Card {
 type Mode = "md" | "html" | "title";
 
 const StoryCard: React.FC<StoryCardProps> = ({
+  id,
+  links,
   title,
   content,
   onUpdatedMd,
@@ -79,7 +80,7 @@ const StoryCard: React.FC<StoryCardProps> = ({
   }, [content]);
 
   return (
-    <div className={styles.card}>
+    <div className={styles.card} id={id}>
       <div className={styles.titleArea}>
         <div className={styles.title} onClick={onTitleClick}>
           {titleContent}
