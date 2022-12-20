@@ -1,6 +1,9 @@
 import { Card } from "@models/Card";
 import parse from "html-react-parser";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import remarkHtml from "remark-html";
+import remarkParse from "remark-parse";
+import { unified } from "unified";
 
 import BinIcon from "./icons/BinIcon";
 import styles from "./StoryCard.module.scss";
@@ -16,15 +19,14 @@ type Mode = "md" | "html" | "title";
 
 const StoryCard: React.FC<StoryCardProps> = ({
   title,
-  md,
-  html,
+  content,
   onUpdatedMd,
   onUpdateTitle,
   onDelete,
 }) => {
   const [mode, setMode] = useState<Mode>("html");
   const [dirtyMd, setDirtyMd] = useState<string>(
-    md.replace(/^:.*(\n|\r\n)?/gm, "")
+    content.replace(/^:.*(\n|\r\n)?/gm, "")
   );
   const [dirtyTitle, setDirtyTitle] = useState<string>(title);
 
@@ -47,8 +49,8 @@ const StoryCard: React.FC<StoryCardProps> = ({
   }, [dirtyTitle, onUpdateTitle]);
 
   useEffect(() => {
-    setDirtyMd(md.replace(/^:.*(\n|\r\n)?/gm, ""));
-  }, [md]);
+    setDirtyMd(content.replace(/^:.*(\n|\r\n)?/gm, ""));
+  }, [content]);
 
   const titleContent = useMemo(() => {
     if (mode === "title")
@@ -71,6 +73,11 @@ const StoryCard: React.FC<StoryCardProps> = ({
     return title;
   }, [dirtyTitle, mode, title, updateTitle]);
 
+  const asHtml = useMemo(() => {
+    return unified().use(remarkParse).use(remarkHtml).processSync(content)
+      .value as string;
+  }, [content]);
+
   return (
     <div className={styles.card}>
       <div className={styles.titleArea}>
@@ -90,7 +97,7 @@ const StoryCard: React.FC<StoryCardProps> = ({
             autoFocus
           />
         ) : (
-          parse(html.replace("<p><div></div></p>", ""))
+          parse(asHtml.replace("<p><div></div></p>", ""))
         )}
       </div>
     </div>

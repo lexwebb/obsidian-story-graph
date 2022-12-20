@@ -1,13 +1,11 @@
 export type Card = {
-  col: string;
-  row: string;
+  id: string;
   title: string;
-  md: string;
-  html: string;
+  content: string;
+  html?: string;
   links?: Link[];
 };
 
 export type Link = {
-  col: string;
-  row: string;
+  id: string;
 };

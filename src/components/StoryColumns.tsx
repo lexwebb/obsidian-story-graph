@@ -24,24 +24,27 @@ const StoryColumns: React.FC<Props> = ({
     <div className={styles.container}>
       {cards.map((column, i) => (
         <div key={i} className={styles.column}>
-          <AddNewCard onAddNewClick={() => onCardInserted(i + 1, 1)} />
-          {column.map((card) => (
+          <AddNewCard onAddNewClick={() => onCardInserted(i, 1)} />
+          {column.map((card, j) => (
             <StoryCard
-              key={`${card.col}-${card.row}`}
-              id={`${card.col}-${card.row}`}
-              onUpdatedMd={(md) => onCardUpdated(`${card.col}-${card.row}`, md)}
-              onUpdateTitle={(title) =>
-                onTitleUpdated(`${card.col}-${card.row}`, title)
-              }
-              onDelete={() => onCardDeleted(`${card.col}-${card.row}`)}
+              key={card.id}
+              id={card.id}
+              onUpdatedMd={(md) => onCardUpdated(`${i}-${j}`, md)}
+              onUpdateTitle={(title) => onTitleUpdated(`${i}-${j}`, title)}
+              onDelete={() => onCardDeleted(`${i}-${j}`)}
               {...card}
             />
           ))}
-          <AddNewCard
-            onAddNewClick={() => onCardInserted(i + 1, column.length + 1)}
-          />
+          {column.length !== 0 && (
+            <AddNewCard
+              onAddNewClick={() => onCardInserted(i, column.length)}
+            />
+          )}
         </div>
       ))}
+      <div className={styles.column}>
+        <AddNewCard onAddNewClick={() => onCardInserted(cards.length, 1)} />
+      </div>
     </div>
   );
 };

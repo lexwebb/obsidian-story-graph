@@ -40,7 +40,7 @@ export default class StoryGraphPlugin extends Plugin {
       (leaf) => new StoryGraphView(leaf)
     );
 
-    this.registerExtensions(["mdsg"], STORY_GRAPH_VIEW_TYPE);
+    this.registerExtensions(["sg"], STORY_GRAPH_VIEW_TYPE);
 
     this.addRibbonIcon("dice", "Activate view", () => {
       this.activateView();
