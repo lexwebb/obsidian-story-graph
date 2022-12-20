@@ -24,7 +24,7 @@ const StoryColumns: React.FC<Props> = ({
     <div className={styles.container}>
       {cards.map((column, i) => (
         <div key={i} className={styles.column}>
-          <AddNewCard onAddNewClick={() => onCardInserted(i, 1)} />
+          <AddNewCard onAddNewClick={() => onCardInserted(i, 0)} />
           {column.map((card, j) => (
             <StoryCard
               key={card.id}
